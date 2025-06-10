@@ -1,0 +1,48 @@
+<app-header></app-header>
+<div class="w-100">
+    <div class="d-flex justify-content-center p-4">
+        <input type="text" [(ngModel)]="search" (ngModelChange)="getalljob()" class="w-75 p-2 px-3 rounded-3 me-3 border-0" placeholder="Search Here ..." style="box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;">
+        <select class="p-2 px-3 rounded-3 me-3 border-0" style="box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;" [(ngModel)]="jobtype" (click)="getalljob()">
+            <option value="" selected>Please Select Job Type</option>
+            <option value="full_time">Full Time</option>
+            <option value="part_time">part Time</option>
+            <option value="contract">Contract</option>
+        </select>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-4" *ngFor="let job of getjob">
+            <div class="p-3 m-3" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ job.title.substring(0,25) }} ...</h5>
+                        <p>{{ job.company_name }}</p>
+                    </div>
+                    <a (click)="savejob(job)" *ngIf="!job.save" style="cursor: pointer;"><i class="bi bi-bookmark fs-4"></i></a>
+                    <a (click)="removejob(job)" *ngIf="job.save" style="cursor: pointer;"><i class="bi bi-bookmark-fill fs-4"></i></a>
+                </div>
+                <p><i class="bi bi-geo-alt me-2 mb-3"></i>{{job.candidate_required_location}}</p>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="p-2 bg-secondary-subtle">{{job.job_type}}</span>
+                    <span class="p-2 bg-secondary-subtle">${{job.salary}}</span>
+                    <span *ngIf="job.salary == null">0</span>
+                </div>
+                <a [href]="'/jobs?id='+job.id" class="bg-dark text-light p-2 d-block text-center rounded text-decoration-none">View More</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <a (click)="prevpage()" class="px-3 text-decoration-none text-dark my-auto" *ngIf="currantpage > 0" style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;">Prev</a>
+        <p *ngIf="getjob.length > 0" class="px-3 text-decoration-none text-dark my-auto">{{currantpage + 1}} of {{totalpage}}</p>
+        <a (click)="nextpage()" class="px-3 text-decoration-none text-dark my-auto" *ngIf="currantpage < totalpage-1" style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;">Next</a>
+    </div>
+
+    <div *ngIf="getjob.length <= 0" class="d-flex justify-content-center align-items-center vh-100">
+        <div class="text-center">
+            <h1 class="fw-bold" style="font-size: 125px;">204</h1>
+            <p class="fs-1">Record Not Found</p>
+            <a href="/joblisting" class="btn btn-dark px-5 mt-4">Find Job</a>
+        </div>
+    </div>
+</div>
