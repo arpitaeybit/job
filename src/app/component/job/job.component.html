@@ -7,6 +7,6 @@
         <p><span class="fw-bold">category :- </span>{{job.category}}</p>
         <p><span class="fw-bold">Location :- </span>{{job.candidate_required_location}}</p>
         <p><span class="fw-bold">job_type :- </span>{{job.job_type}}</p>
-        <p><span class="fw-bold">description :-</span> {{job.description}}</p>
+        <div [innerHTML]="job.description"></div>
     </div>
 </div>

@@ -25,7 +25,7 @@ export class JoblistingComponent {
 
   currantpage = 1
 
-  limit = 9
+  limit = 10
 
   constructor(private homeservices: HomeService) {
     this.getalljob()
@@ -33,7 +33,7 @@ export class JoblistingComponent {
 
   ngOnInit(): void {
     this.getalljob()
-  }
+  } 
 
   getalljob() {
     let savejob: any = []
@@ -60,15 +60,15 @@ export class JoblistingComponent {
           return job.title.toLowerCase().includes(this.search.toLowerCase())
         }
       })
-      this.alljobs = this.alljobs.filter((item:any, index:any, self:any) =>
-        index === self.findIndex((t:any) => t.id === item.id)
+      this.alljobs = this.alljobs.filter((item: any, index: any, self: any) =>
+        index === self.findIndex((t: any) => t.id === item.id)
       );
     })
   }
 
   @HostListener('window:scroll', ['$event'])
   scrollevent(event: any) {
-    if (Math.floor(window.scrollY / window.innerHeight) + 2 > this.currantpage) {
+    if (Math.floor(window.scrollY / window.innerHeight) + 3 > this.currantpage) {
       this.currantpage++
       this.getalljob()
     }
