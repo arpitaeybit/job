@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { HeaderComponent } from '../layout/header/header.component';
 import Swal from 'sweetalert2'
 import { CommonModule } from '@angular/common';
@@ -7,25 +7,25 @@ import { HomeService } from '../../services/home.service';
 
 @Component({
   selector: 'app-joblisting',
-  imports: [HeaderComponent,CommonModule,FormsModule],
-  providers:[HomeService],
+  imports: [HeaderComponent, CommonModule, FormsModule],
+  providers: [HomeService],
   templateUrl: './joblisting.component.html',
   styleUrl: './joblisting.component.css'
 })
 export class JoblistingComponent {
   alljobs: any
 
-  getjob: any
+  getjob: any = []
+
+  adddata: any
 
   search: any = ''
 
   jobtype: any = ''
 
-  totalpage = 0
+  currantpage = 1
 
-  currantpage = 0
-
-  limit = 6
+  limit = 9
 
   constructor(private homeservices: HomeService) {
     this.getalljob()
@@ -38,7 +38,6 @@ export class JoblistingComponent {
   getalljob() {
     let savejob: any = []
     this.homeservices.getalljob().subscribe((data: any) => {
-      //save
       if (typeof window !== 'undefined' && localStorage.getItem('savejob') !== null) {
         savejob = JSON.parse(localStorage.getItem('savejob') || '[]')
       }
@@ -52,17 +51,27 @@ export class JoblistingComponent {
         })
       })
 
-      // pagination and sarch
-      this.alljobs = data.jobs.filter((job: any) => {
+      this.adddata = data.jobs.splice(this.currantpage * this.limit, this.limit)
+      this.getjob = [...this.getjob, ...this.adddata]
+      this.alljobs = this.getjob.filter((job: any) => {
         if (this.jobtype !== '') {
           return job.title.toLowerCase().includes(this.search.toLowerCase()) && job.job_type == this.jobtype
         } else {
           return job.title.toLowerCase().includes(this.search.toLowerCase())
         }
       })
-      this.totalpage = Math.ceil(this.alljobs.length / this.limit)
-      this.getjob = this.alljobs.splice(this.currantpage * this.limit, this.limit)
+      this.alljobs = this.alljobs.filter((item:any, index:any, self:any) =>
+        index === self.findIndex((t:any) => t.id === item.id)
+      );
     })
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  scrollevent(event: any) {
+    if (Math.floor(window.scrollY / window.innerHeight) + 2 > this.currantpage) {
+      this.currantpage++
+      this.getalljob()
+    }
   }
 
   prevpage() {
@@ -77,6 +86,7 @@ export class JoblistingComponent {
 
   savejob(job: any) {
     let data = []
+    this.getjob = []
     if (typeof window !== null && localStorage.getItem('savejob') !== null) {
       data = JSON.parse(localStorage.getItem('savejob') || '[]')
     }
@@ -88,6 +98,7 @@ export class JoblistingComponent {
   }
 
   removejob(job: any) {
+    this.getjob = []
     let savejob = JSON.parse(localStorage.getItem('savejob') || '[]')
     let data: any = []
     savejob.filter((item: any) => {
@@ -99,8 +110,8 @@ export class JoblistingComponent {
     if (data.length == 0) {
       localStorage.removeItem('savejob')
     }
-    this.getalljob()
 
+    this.getalljob()
     Swal.fire("Deleted!", "", "success");
   }
 }

@@ -1,36 +1,30 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './component/home/home.component';
-import { JobComponent } from './component/job/job.component';
-import { LoginComponent } from './component/auth/login/login.component';
 import { authGuard } from './guards/auth.guard';
-import { ErrorComponent } from './component/error/error.component';
-import { SaveComponent } from './component/save/save.component';
-import { JoblistingComponent } from './component/joblisting/joblisting.component';
 
 export const routes: Routes = [
     {
-        path:'',
-        component:HomeComponent,
-        canActivate:[authGuard]
+        path: '',
+        loadComponent: () => import('./component/home/home.component').then(m => m.HomeComponent),
+        canActivate: [authGuard]
     },
     {
-        path:'joblisting',
-        component:JoblistingComponent,
-        canActivate:[authGuard]
+        path: 'joblisting',
+        loadComponent: () => import('./component/joblisting/joblisting.component').then(m => m.JoblistingComponent),
+        canActivate: [authGuard]
     },
     {
-        path:'jobs',
-        component:JobComponent,
-        canActivate:[authGuard]
-    },{
-        path:'login',
-        component:LoginComponent
-    },{
-        path:'save',
-        component:SaveComponent,
-        canActivate:[authGuard]
-    },{
-        path:'**',
-        component:ErrorComponent
+        path: 'jobs',
+        loadComponent: () => import('./component/job/job.component').then(m => m.JobComponent),
+        canActivate: [authGuard]
+    }, {
+        path: 'login',
+        loadComponent: () => import('./component/auth/login/login.component').then(m => m.LoginComponent),
+    }, {
+        path: 'save',
+        loadComponent: () => import('./component/save/save.component').then(m => m.SaveComponent),
+        canActivate: [authGuard]
+    }, {
+        path: '**',
+        loadComponent: () => import('./component/error/error.component').then(m => m.ErrorComponent)
     }
 ];
