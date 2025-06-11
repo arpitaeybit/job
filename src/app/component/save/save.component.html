@@ -1,0 +1,25 @@
+<app-header></app-header>
+<div class="w-100">
+    <div class="mt-4">
+        <a href="/joblisting" class="bg-danger text-light px-3 py-1 text-decoration-none m-4">Back</a>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-4" *ngFor="let job of savedata">
+            <div class="p-3 m-3" style="box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>{{ job.title.substring(0,25) }} ...</h5>
+                        <p>{{ job.company_name }}</p>
+                    </div>
+                    <a (click)="removejob(job)" style="cursor: pointer;"><i class="bi bi-bookmark-fill fs-4"></i></a>
+                </div>
+                <p><i class="bi bi-geo-alt me-2 mb-3"></i>{{job.candidate_required_location}}</p>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="p-2 bg-secondary-subtle">{{job.job_type}}</span>
+                    <span class="p-2 bg-secondary-subtle">${{job.salary}}</span>
+                </div>
+                <a [href]="'/jobs?id='+job.id" class="bg-dark text-light p-2 d-block text-center rounded text-decoration-none">View More</a>
+            </div>
+        </div>
+    </div>
+</div>

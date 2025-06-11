@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <form [formGroup]="userdata" (ngSubmit)="login()" style="width: 400px; box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px; padding: 50px;">
+        <h2 class="text-center mb-4">Login</h2>
+        <div class="mb-2">
+            <label class="d-block">Email</label>
+            <input type="text" formControlName="email" class="w-100 rounded border-1 p-1 px-2 mt-2">
+        </div>
+        <div class="mb-2">
+            <label class="d-block">Password</label>
+            <input type="password" formControlName="password" class="w-100 rounded border-1 p-1 px-2 mt-2">
+        </div>
+        <button type="submit" class="w-100 border-0 rounded p-1 bg-dark text-light mt-3">Submit</button>
+    </form>
+</div>
