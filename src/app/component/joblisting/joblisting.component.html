@@ -38,7 +38,7 @@
         <a (click)="nextpage()" class="px-3 text-decoration-none text-dark my-auto" *ngIf="currantpage < totalpage-1" style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;">Next</a>
     </div> -->
 
-    <div *ngIf="getjob.length <= 0" class="d-flex justify-content-center align-items-center vh-100">
+    <div *ngIf="alljobs.length <= 0" class="d-flex justify-content-center align-items-center vh-100">
         <div class="text-center">
             <h1 class="fw-bold" style="font-size: 125px;">204</h1>
             <p class="fs-1">Record Not Found</p>
